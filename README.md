@@ -1,6 +1,6 @@
 # RV32I Multicycle Processor Implementation
 
-This repository contains a synthesizable Verilog implementation of a 32-bit RISC-V processor. The design utilizes a **5-stage multicycle datapath**, optimizing hardware area efficiency while maintaining functional completeness by implementing the full **RV32I Instruction Set Architecture (ISA)**.
+This repository contains a synthesizable Verilog implementation of a 32-bit RISC-V processor. The design utilizes a **5-stage multicycle datapath**, optimizing hardware area efficiency while maintaining functional completeness by implementing the full **RV32I Instruction Set Architecture (ISA)**. It also attainted timing closure of **125 MHz**
 
 ## 🏗 Architecture & Design
 
