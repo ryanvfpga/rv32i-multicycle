@@ -85,6 +85,7 @@ module control_fsm(
 
                 alu_in1_ctrl = 1;
                 alu_in2_ctrl = 1;
+                
                 imm_ctrl = 3'b011;
                 alu_ctrl = 3'b000;
 
@@ -142,6 +143,7 @@ module control_fsm(
               
                     alu_in1_ctrl = 0; 
                     alu_in2_ctrl = 0; 
+                    
                     case(funct3)
                         3'b000: alu_ctrl = 4'b1010; // BEQ
                         3'b001: alu_ctrl = 4'b1011; // BNE
@@ -149,7 +151,9 @@ module control_fsm(
                         3'b101: alu_ctrl = 4'b1101; // BGE
                         3'b110: alu_ctrl = 4'b1110; // BLTU
                         3'b111: alu_ctrl = 4'b1111; // BGEU
+                        
                         default: alu_ctrl = 4'b0000;
+                        
                     endcase
                     
                      case(t_branch)
