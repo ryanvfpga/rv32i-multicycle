@@ -1,6 +1,7 @@
 `timescale 1ns / 1ps
 
 module store_tb;
+
     reg clk;
     reg rst;
     integer i;
@@ -16,16 +17,13 @@ module store_tb;
         clk = 0;
         rst = 1;
 
-        for (i=0; i<1024; i=i+1) uut.dp.mem_inst.regs[i] = 0;
-        for (i=0; i<32; i=i+1) uut.dp.rf.regs[i] = 0;
+        for (i = 0; i < 1024; i = i + 1)
+            uut.dp.mem_inst.regs[i] = 0;
 
-        #20;
-        rst = 0;
+        for (i = 0; i < 32; i = i + 1)
+            uut.dp.rf.regs[i] = 0;
 
-        $display("\n=============================================================");
-        $display("             RISC-V STORE VARIATIONS TEST (S-TYPE)           ");
-        $display("      Checking Masking Logic: SB (Byte) & SH (Half)          ");
-        $display("=============================================================");
+        #20 rst = 0;
 
         uut.dp.rf.regs[1] = 32'h00000100;
         uut.dp.rf.regs[2] = 32'h112233AA;
@@ -39,27 +37,17 @@ module store_tb;
         uut.dp.mem_inst.regs[3] = 32'h0050A223;
         uut.dp.mem_inst.regs[4] = 32'h0000006f;
 
-        $display("Time | PC | Inst | Mem[0x100] (Target) | Mem[0x104] (Next Word)");
-        $monitor("%4t | %h | %h | %h | %h", 
-                 $time, uut.dp.pc, uut.dp.instreg_out, 
-                 uut.dp.mem_inst.regs[64], uut.dp.mem_inst.regs[65]);
-        
         #600;
 
-        $display("\n-------------------------------------------------------------");
-
         if (uut.dp.mem_inst.regs[64] === 32'hDDEEBBAA)
-            $display("[PASS] Mixed Stores (SB+SB+SH) at 0x100 = %h", uut.dp.mem_inst.regs[64]);
-        else begin
-            $display("[FAIL] Mixed Stores at 0x100 = %h", uut.dp.mem_inst.regs[64]);
-            $display("       Expected: DDEEBBAA");
-            $display("       (Possible Cause: SB/SH overwrote neighbor bytes)");
-        end
+            $display("SB/SH PASS");
+        else
+            $display("SB/SH FAIL");
 
         if (uut.dp.mem_inst.regs[65] === 32'hDEADBEEF)
-            $display("[PASS] Store Word (SW) at 0x104 = %h", uut.dp.mem_inst.regs[65]);
+            $display("SW PASS");
         else
-            $display("[FAIL] Store Word at 0x104 = %h (Expected DEADBEEF)", uut.dp.mem_inst.regs[65]);
+            $display("SW FAIL");
 
         $finish;
     end
